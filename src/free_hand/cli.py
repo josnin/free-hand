@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 
 from .clipboard import ClipboardError, write_clipboard
+from .color import render_results, supports_color
 from .config import load_config
 from .executor import build_registry, execute_response, validate_arguments
 from .history import append_history, read_history
@@ -45,7 +46,7 @@ def run(raw: str, source: str, copy_results: bool = False) -> int:
         int(config.get("max_output_chars", 20_000)),
     )
     rendered = json.dumps(result, indent=2, ensure_ascii=False)
-    print(rendered)
+    print(render_results(result, color=supports_color(sys.stdout)))
 
     # Keep the latest result in a predictable file for easy manual copy/paste.
     # The .free-hand directory is ignored by Git by default.
@@ -196,7 +197,7 @@ def main(argv: list[str] | None = None) -> int:
                         print("Saved results copied to clipboard.", file=sys.stderr)
                     except ClipboardError as exc:
                         print(f"Warning: {exc}", file=sys.stderr)
-                print(rendered)
+                print(render_results(saved, color=supports_color(sys.stdout)))
         elif args.command == "history":
             print(json.dumps(read_history(root / str(config["history_file"]), max(1, args.limit)), indent=2, ensure_ascii=False))
         elif args.command == "config":
