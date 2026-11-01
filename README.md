@@ -1,26 +1,45 @@
 # Free-hand (`fh`)
 
+## Purpose
+
+Free-hand is for developers who still prefer to keep a human in the loop, at no cost. There are no API keys, no per-token billing, and no subscriptions beyond the free tier of whichever AI chat assistant you already use. You stay in control: you paste the assistant's response, review it, and approve every file write, Git change, and command before it runs.
+
+## Overview
+
 Free-hand is a lightweight, AI-agnostic Python CLI for a human-in-the-loop AI-to-local-tools workflow. It does not call an LLM API or make AI-provider network requests. It works with any AI chat assistant that can generate code and follow structured instructions, including ChatGPT, DeepSeek, Gemini, Claude, and other AI models. It accepts AI-generated JSON tool-call responses, validates them, asks for approval before risky operations, runs local tools, and can copy the results back to your clipboard.
 
 Free-hand is especially useful when you reach an AI service's usage limits or run out of available tokens. Switch to another AI chat assistant and continue working on the same project without changing your local development workflow.
 
 ## Requirements
 
-- Python 3.11+
+- Python 3.14+
+- [uv](https://docs.astral.sh/uv/) (recommended)
 - No Python runtime dependencies
 - Optional clipboard support for copying generated prompts and execution results. If unavailable, results remain saved and printed for manual copying.
 
 ## Install
 
-From the project directory:
+### Shell installer (recommended)
+
+Download, review, then run the installer. It creates an isolated virtual environment under `~/.local/share/free-hand` and links `fh` into `~/.local/bin`:
 
 ```sh
-python -m venv .venv
-. .venv/bin/activate
-python -m pip install -e .
+curl -fsSL https://raw.githubusercontent.com/josnin/free-hand/main/install.sh \
+  -o install.sh
+less install.sh
+sh install.sh
 ```
 
-The package installs the `fh` command. To update an existing checkout, activate its virtual environment and run `python -m pip install -e .` again.
+Re-run `sh install.sh` to update. Requires Python 3.14+ on your `PATH`. Override locations with `FH_INSTALL_DIR` and `FH_BIN_DIR`. If `fh` is not found, add `~/.local/bin` to your `PATH`.
+
+### From a checkout (development)
+
+```sh
+uv sync
+uv run fh --help
+```
+
+`uv sync` creates `.venv` with Python 3.14 (pinned in `.python-version`) and installs the `fh` command in editable mode. Prefix commands with `uv run`, e.g. `uv run fh run`, or activate `.venv` to call `fh` directly. To update an existing checkout, run `uv sync` again.
 
 ## Quick start
 
@@ -116,7 +135,7 @@ Response cleanup tolerates Markdown fences and surrounding explanatory text by e
 
 ## Development
 
-Run tests with `python -m pytest -q`.
+Run tests with `uv run pytest -q`.
 
 ### Clipboard behavior
 
