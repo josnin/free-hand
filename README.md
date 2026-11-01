@@ -8,7 +8,21 @@ Free-hand is for developers who still prefer to keep a human in the loop, at no 
 
 ![Free-hand demo: review diff previews, approve, and paste results back to your AI chat](docs/demo.gif)
 
-Free-hand is a lightweight, AI-agnostic Python CLI for a human-in-the-loop AI-to-local-tools workflow. It does not call an LLM API or make AI-provider network requests. It works with any AI chat assistant that can generate code and follow structured instructions, including ChatGPT, DeepSeek, Gemini, Claude, and other AI models. It accepts AI-generated JSON tool-call responses, validates them, asks for approval before risky operations, runs local tools, and can copy the results back to your clipboard.
+Free-hand is a lightweight, AI-agnostic Python CLI for a human-in-the-loop AI-to-local-tools workflow. It does not call an LLM API or make AI-provider network requests. It accepts AI-generated JSON tool-call responses, validates them, asks for approval before risky operations, runs local tools, and can copy the results back to your clipboard.
+
+### Compatible chat assistants
+
+Use any assistant that can follow the generated instructions and return the JSON tool-call envelope. The interaction is manual: paste the output from `fh prompt` into the chat, paste its JSON response into `fh run`, then return the execution results to the chat.
+
+| Assistant | Notes |
+|---|---|
+| ChatGPT | Manual paste/execute workflow |
+| DeepSeek | Manual paste/execute workflow |
+| Claude | Manual paste/execute workflow |
+| [Duck.ai](https://duck.ai/) | Manual paste/execute workflow; no Duck.ai API key is required |
+| Gemini | Manual paste/execute workflow |
+| Microsoft Copilot | Manual paste/execute workflow |
+| Other assistants | Compatible when they can follow the generated instructions and return the required JSON envelope |
 
 Free-hand is especially useful when you reach an AI service's usage limits or run out of available tokens. Switch to another AI chat assistant and continue working on the same project without changing your local development workflow.
 
@@ -52,10 +66,6 @@ fh prompt > fh-system-prompt.txt
 ```
 
 Copy the contents of `fh-system-prompt.txt` into your preferred AI assistant's instructions. Alternatively, run `fh prompt --copy` to copy the generated system prompt directly to your clipboard.
-
-### Using Duck.ai
-
-[Duck.ai](https://duck.ai/) works as a manual chat front-end; Free-hand does not send requests to Duck.ai or require an API key. Start a new Duck.ai chat, paste the output from `fh prompt` as the first message, then describe the task you want to perform. Paste Duck.ai's JSON response into `fh run`, and paste Free-hand's execution results back into the same Duck.ai chat to continue.
 
 ### Recommended interactive workflow
 
