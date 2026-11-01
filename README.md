@@ -21,6 +21,7 @@ Use any assistant that can follow the generated instructions and return the JSON
 | Claude | Manual paste/execute workflow |
 | [Duck.ai](https://duck.ai/) | Manual paste/execute workflow; no Duck.ai API key is required |
 | Gemini | Manual paste/execute workflow |
+| Grok | Manual paste/execute workflow |
 | Microsoft Copilot | Manual paste/execute workflow |
 | Other assistants | Compatible when they can follow the generated instructions and return the required JSON envelope |
 
