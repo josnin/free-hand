@@ -20,6 +20,7 @@ from .executor import build_registry, execute_response, validate_arguments
 from .history import append_history, read_history
 from .prompt import make_system_prompt
 from .protocol import ProtocolError, clean_response, parse_response
+from .render import preview_call, render_activity
 
 
 def approval(tool, args) -> bool:
@@ -33,7 +34,7 @@ def approval(tool, args) -> bool:
     else:
         header = f"\nApproval required for {tool.name} [{tool.risk}]"
         prompt = "Approve this operation? [y/N] "
-    print(f"{header}. Arguments:\n{json.dumps(args, indent=2, ensure_ascii=False)}")
+    print(f"{header}\n{preview_call(Path.cwd().resolve(), tool.name, args, color)}")
     return input(prompt).strip().lower() in {"y", "yes"}
 
 
@@ -63,13 +64,15 @@ def run(raw: str, source: str, copy_results: bool = False) -> int:
         int(config.get("max_output_chars", 20_000)),
     )
     rendered = json.dumps(result, indent=2, ensure_ascii=False)
-    print(render_results(result, color=supports_color(sys.stdout)))
+    print(render_activity(response, result, supports_color(sys.stdout)))
 
     # Keep the latest result in a predictable file for easy manual copy/paste.
     # The .free-hand directory is ignored by Git by default.
     result_file = root / ".free-hand" / "last-results.json"
     result_file.parent.mkdir(parents=True, exist_ok=True)
     result_file.write_text(rendered + "\n", encoding="utf-8")
+
+    print(f"\nFull results saved to {result_file.relative_to(root)}; run `fh results` to print them as JSON.")
 
     history = root / str(config.get("history_file", ".free-hand/history.jsonl"))
     append_history(history, {"source": source, "result": result})

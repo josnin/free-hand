@@ -64,10 +64,10 @@ Then repeat this loop without restarting `fh`:
 1. Copy the JSON response from your AI chat assistant.
 2. Paste it into the running `fh` terminal.
 3. Enter `END` on a line by itself to submit that response.
-4. Free-hand validates the response, executes approved tool calls, prints the results, saves them to `.free-hand/last-results.json`, and copies them to the clipboard when supported.
+4. Free-hand validates the response and shows a diff-style preview (edits, new files) or the exact command for each operation that needs approval. After execution it prints a short activity summary, saves the full JSON results to `.free-hand/last-results.json`, and copies them to the clipboard when supported.
 5. Paste the results back into your AI chat assistant and continue the task.
 
-Enter `exit` at an empty `fh>` prompt or press Ctrl-C to close the session. If clipboard copying is unavailable, copy the printed JSON or open `.free-hand/last-results.json`.
+Enter `exit` at an empty `fh>` prompt or press Ctrl-C to close the session. If clipboard copying is unavailable, run `fh results` to print the JSON or open `.free-hand/last-results.json`.
 
 For a one-off response file, use `fh run --input response.json`.
 

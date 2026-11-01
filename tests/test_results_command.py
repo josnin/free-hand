@@ -91,7 +91,8 @@ def test_run_input_automatically_copies_results(monkeypatch, tmp_path, capsys):
     captured = capsys.readouterr()
     assert json.loads(copied["value"])["results"] == []
     assert "copied to clipboard" in captured.err
-    assert json.loads(captured.out)["results"] == []
+    assert "Manual input." in captured.out
+    assert '"results"' not in captured.out
 
 
 def test_interactive_session_processes_multiple_responses_until_exit(monkeypatch, tmp_path, capsys):

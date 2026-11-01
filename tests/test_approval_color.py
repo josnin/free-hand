@@ -1,5 +1,4 @@
 import io
-import json
 import re
 from pathlib import Path
 
@@ -49,7 +48,8 @@ def test_approval_color_on_tty(monkeypatch):
     # Plain-text (ANSI stripped) still readable
     stripped = ANSI_RE.sub("", out)
     assert "Approval required for run_command" in stripped
-    assert json.loads(stripped.split("Arguments:\n", 1)[1]) == {"argv": ["echo", "hi"]}
+    assert "$ echo hi" in stripped
+    assert "Arguments" not in stripped
 
 
 def test_approval_plain_on_non_tty(monkeypatch):
