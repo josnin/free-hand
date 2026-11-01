@@ -53,6 +53,10 @@ fh prompt > fh-system-prompt.txt
 
 Copy the contents of `fh-system-prompt.txt` into your preferred AI assistant's instructions. Alternatively, run `fh prompt --copy` to copy the generated system prompt directly to your clipboard.
 
+### Using Duck.ai
+
+[Duck.ai](https://duck.ai/) works as a manual chat front-end; Free-hand does not send requests to Duck.ai or require an API key. Start a new Duck.ai chat, paste the output from `fh prompt` as the first message, then describe the task you want to perform. Paste Duck.ai's JSON response into `fh run`, and paste Free-hand's execution results back into the same Duck.ai chat to continue.
+
 ### Recommended interactive workflow
 
 Start one persistent session from your project directory:
