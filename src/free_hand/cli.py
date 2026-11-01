@@ -9,8 +9,7 @@ from pathlib import Path
 from .clipboard import ClipboardError, write_clipboard
 from .color import (
     BOLD,
-    RESET,
-    RISK_COLORS,
+    CYAN,
     YELLOW,
     paint,
     render_results,
@@ -26,13 +25,11 @@ from .protocol import ProtocolError, clean_response, parse_response
 def approval(tool, args) -> bool:
     color = supports_color(sys.stdout)
     if color:
-        risk_color = RISK_COLORS.get(tool.risk, YELLOW)
         header = (
-            f"\n{paint('Approval required', BOLD)} for "
-            f"{paint(tool.name, BOLD)} "
-            f"{paint('[' + tool.risk + ']', risk_color)}"
+            f"\n{paint('Approval required', YELLOW)} for "
+            f"{paint(tool.name, BOLD)}"
         )
-        prompt = paint("Approve this operation?", BOLD) + " [y/N] "
+        prompt = paint("Approve this operation?", YELLOW) + " [y/N] "
     else:
         header = f"\nApproval required for {tool.name} [{tool.risk}]"
         prompt = "Approve this operation? [y/N] "
@@ -93,7 +90,8 @@ def interactive_session() -> int:
     print("Enter exit on an empty prompt, or press Ctrl-C to quit.\n")
 
     while True:
-        print("fh> ", end="", flush=True)
+        prompt_prefix = paint("fh>", CYAN) + " " if supports_color(sys.stdout) else "fh> "
+        print(prompt_prefix, end="", flush=True)
         lines: list[str] = []
         total_bytes = 0
         too_large = False
