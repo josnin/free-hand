@@ -14,6 +14,13 @@ def test_invalid_backslash_escape_has_actionable_message():
     assert 'rather than "\\*"' in str(exc.value)
 
 
+def test_invalid_control_character_has_actionable_message():
+    raw = '{"version":1,"tool_calls":[],"final_message":"First line\nSecond line"}'
+    with pytest.raises(ProtocolError, match="JSON strings cannot contain literal newlines") as exc:
+        parse_response(raw)
+    assert "encode each newline as \\n" in str(exc.value)
+
+
 def test_clean_response_extracts_markdown_fenced_json():
     from free_hand.protocol import clean_response
 

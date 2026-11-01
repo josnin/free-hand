@@ -23,6 +23,16 @@ def parse_response(raw: str) -> dict[str, Any]:
                 "for a wildcard pattern."
                 f" Near: {snippet!r}"
             )
+        elif exc.msg.startswith("Invalid control character"):
+            start = max(0, exc.pos - 24)
+            end = min(len(raw), exc.pos + 24)
+            snippet = raw[start:end].replace("\n", "\\n").replace("\r", "\\r")
+            message += (
+                ". JSON strings cannot contain literal newlines, tabs, or other control "
+                "characters. For multiline tool arguments such as file content, encode "
+                "each newline as \\n and each tab as \\t."
+                f" Near: {snippet!r}"
+            )
         raise ProtocolError(message) from exc
     if not isinstance(data, dict) or set(data) != {"version", "tool_calls", "final_message"}:
         raise ProtocolError("Response must be an object containing exactly version, tool_calls, final_message.")
@@ -126,4 +136,3 @@ def clean_response(raw: str) -> str:
         "Could not find a valid Free-hand JSON response. Copy the complete response, "
         "including its JSON object; Markdown fences and surrounding explanatory text are okay."
     ) from original_error
-

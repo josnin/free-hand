@@ -18,4 +18,5 @@ def test_prompt_teaches_valid_json_escaping(tmp_path: Path):
     assert '"pattern": "*"' in prompt
     assert '"pattern": "\\*"' in prompt
     assert "JSON escaping is strict" in prompt
+    assert "must encode line breaks as `\\n`" in prompt
     assert "Never return Python-style strings" in prompt
