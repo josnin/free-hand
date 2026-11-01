@@ -12,6 +12,14 @@ GREEN = "\x1b[32m"
 YELLOW = "\x1b[33m"
 RED = "\x1b[31m"
 CYAN = "\x1b[36m"
+MAGENTA = "\x1b[35m"
+
+RISK_COLORS = {
+    "read": CYAN,
+    "write": YELLOW,
+    "git": MAGENTA,
+    "command": RED,
+}
 
 STATUS_COLORS = {
     "success": GREEN,

@@ -7,7 +7,15 @@ import sys
 from pathlib import Path
 
 from .clipboard import ClipboardError, write_clipboard
-from .color import render_results, supports_color
+from .color import (
+    BOLD,
+    RESET,
+    RISK_COLORS,
+    YELLOW,
+    paint,
+    render_results,
+    supports_color,
+)
 from .config import load_config
 from .executor import build_registry, execute_response, validate_arguments
 from .history import append_history, read_history
@@ -16,8 +24,20 @@ from .protocol import ProtocolError, clean_response, parse_response
 
 
 def approval(tool, args) -> bool:
-    print(f"\nApproval required for {tool.name}. Arguments:\n{json.dumps(args, indent=2, ensure_ascii=False)}")
-    return input("Approve this operation? [y/N] ").strip().lower() in {"y", "yes"}
+    color = supports_color(sys.stdout)
+    if color:
+        risk_color = RISK_COLORS.get(tool.risk, YELLOW)
+        header = (
+            f"\n{paint('Approval required', BOLD)} for "
+            f"{paint(tool.name, BOLD)} "
+            f"{paint('[' + tool.risk + ']', risk_color)}"
+        )
+        prompt = paint("Approve this operation?", BOLD) + " [y/N] "
+    else:
+        header = f"\nApproval required for {tool.name} [{tool.risk}]"
+        prompt = "Approve this operation? [y/N] "
+    print(f"{header}. Arguments:\n{json.dumps(args, indent=2, ensure_ascii=False)}")
+    return input(prompt).strip().lower() in {"y", "yes"}
 
 
 def read_response(path: str | None, max_bytes: int) -> str:
