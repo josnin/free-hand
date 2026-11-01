@@ -6,6 +6,8 @@ Free-hand is for developers who still prefer to keep a human in the loop, at no 
 
 ## Overview
 
+![Free-hand demo: review diff previews, approve, and paste results back to your AI chat](docs/demo.gif)
+
 Free-hand is a lightweight, AI-agnostic Python CLI for a human-in-the-loop AI-to-local-tools workflow. It does not call an LLM API or make AI-provider network requests. It works with any AI chat assistant that can generate code and follow structured instructions, including ChatGPT, DeepSeek, Gemini, Claude, and other AI models. It accepts AI-generated JSON tool-call responses, validates them, asks for approval before risky operations, runs local tools, and can copy the results back to your clipboard.
 
 Free-hand is especially useful when you reach an AI service's usage limits or run out of available tokens. Switch to another AI chat assistant and continue working on the same project without changing your local development workflow.
@@ -136,6 +138,8 @@ Response cleanup tolerates Markdown fences and surrounding explanatory text by e
 ## Development
 
 Run tests with `uv run pytest -q`.
+
+The demo GIF is generated from a real `fh run` session; regenerate it after changing the output format with `uv run --with pillow python scripts/make_demo_gif.py`.
 
 ### Clipboard behavior
 
